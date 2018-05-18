@@ -3,9 +3,9 @@ package com.moviesuggestions.manojkumar.moviesuggestions;
 public class Movies {
 
     private String movie;
-    private int thumbnail;
+    private String thumbnail;
 
-    public Movies(String movie, int thumbnail) {
+    public Movies(String movie, String thumbnail) {
         this.movie = movie;
         this.thumbnail = thumbnail;
     }
@@ -14,7 +14,7 @@ public class Movies {
         return movie;
     }
 
-    public int getThumbnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
@@ -22,7 +22,7 @@ public class Movies {
         this.movie = movie;
     }
 
-    public void setThumbnail(int thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 

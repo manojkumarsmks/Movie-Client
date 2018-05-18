@@ -35,7 +35,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.movie_title.setText(movieList.get(position).getMovie());
-        holder.movie_tumbnail.setImageResource(movieList.get(position).getThumbnail());
+       // holder.movie_tumbnail.setImageResource(movieList.get(position).getThumbnail());
     }
 
     @Override

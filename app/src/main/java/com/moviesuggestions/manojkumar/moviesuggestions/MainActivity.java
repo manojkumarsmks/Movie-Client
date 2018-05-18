@@ -1,5 +1,6 @@
 package com.moviesuggestions.manojkumar.moviesuggestions;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,20 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,58 +35,110 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Movies> moviesList;
+    public static List<Movies> moviesList = new ArrayList<Movies>();
+    public static String TAG = "MAIN_ACTIVITY_LOG";
+    private String url;
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        moviesList = new ArrayList<>();
-        moviesList.add(new Movies("Album 1", R.drawable.album1));
-        moviesList.add(new Movies("Album 2", R.drawable.album2));
-        moviesList.add(new Movies("Album 3", R.drawable.album3));
-        moviesList.add(new Movies("Album 4", R.drawable.album4));
-        moviesList.add(new Movies("Album 5", R.drawable.album5));
-        moviesList.add(new Movies("Album 6", R.drawable.album6));
-        moviesList.add(new Movies("Album 7", R.drawable.album7));
+        url = "https://api.themoviedb.org/3/list/70010?api_key=a85135fc6142aa13cf24097b37635007&language=en-US";
 
-
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.main_recycler_view);
-        RecycleAdapter recycleAdapter = new RecycleAdapter(getApplicationContext(), moviesList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
+        final RecycleAdapter recycleAdapter = new RecycleAdapter(getApplicationContext(), moviesList);
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(recycleAdapter);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading, Please Wait ...");
+        progressDialog.show();
+
+        // Initialize a new RequestQueue instance
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, response.toString());
+                try {
+                    readJSONData(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                progressDialog.hide();
+                recycleAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, error.getMessage());
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+        Log.d(TAG, "Movies are "+moviesList.size());
+        for(int i=0; i<moviesList.size(); i++) {
+            Log.d(TAG,  "Movies are "+moviesList.get(i).getMovie());
+        }
+
+
     }
-    /*private void httpRequest() {
+
+    // JSON reader
+    private void readJSONData(JSONObject response) throws JSONException {
+
+        Log.d(TAG, response.toString());
+        JSONArray jsonArray = response.getJSONArray("items");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String movieTitle = jsonObject.getString("title");
+            String movieTumbnail = jsonObject.getString("backdrop_path");
+
+            Movies movies = new Movies(movieTitle, movieTumbnail);
+            moviesList.add(movies);
+        }
+
+    }
+
+    private void httpRequest() {
         String str = "https://api.themoviedb.org/3/search/movie?api_key=a85135fc6142aa13cf24097b37635007&query=Jack Reacher";
         Task task = new Task(str);
         task.execute();
     }
 
-    private void readStream(InputStream inputStream) throws IOException {
+    private String readStream(InputStream inputStream) throws IOException {
         BufferedReader bufferedInputStream = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder total = new StringBuilder();
 
         String line;
-        while ((line = bufferedInputStream.readLine())!= null) {
-            Log.d("LOG_DEBUG", "Line "+line);
+        while ((line = bufferedInputStream.readLine()) != null) {
+            Log.d("LOG_DEBUG", "Line " + line);
             total.append(line).append('\n');
         }
 
         Log.d("LOG_DEBUG", total.toString());
+
+        return total.toString();
     }
 
-    class Task extends AsyncTask<String, Void, Void> {
+    class Task extends AsyncTask<String, Void, String> {
 
         HttpURLConnection httpURLConnection;
         URL url;
         String str;
+        String returnString = null;
 
         public Task(String str) {
             this.str = str;
         }
+
         @Override
-        protected Void doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
             try {
                 url = new URL(str);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -79,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 InputStream inputStream = httpURLConnection.getInputStream();
                 if (inputStream != null) {
                     Log.d("LOG_DEBUG", "InputStream is not null");
-                    readStream(inputStream);
+                    returnString = readStream(inputStream);
                 }
             } catch (IOException e) {
                 Log.d("LOG_DEBUG", "IOException " + e.toString());
@@ -87,11 +154,19 @@ public class MainActivity extends AppCompatActivity {
                 httpURLConnection.disconnect();
             }
 
-
-
-            return null;
+            return returnString;
         }
-    }*/
+
+        @Override
+        protected void onPostExecute(String s) {
+            onFinishing(s);
+        }
+
+
+        private String onFinishing(String s) {
+            return s;
+        }
+    }
 }
 
 
