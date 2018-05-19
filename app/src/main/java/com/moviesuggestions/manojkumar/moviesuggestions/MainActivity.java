@@ -32,6 +32,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String movieTitle = jsonObject.getString("title");
-            String movieTumbnail = jsonObject.getString("backdrop_path");
-
+            String movieTumbnail = "https://image.tmdb.org/t/p/w200/" + jsonObject.getString("poster_path");
             Movies movies = new Movies(movieTitle, movieTumbnail);
             moviesList.add(movies);
         }
