@@ -2,7 +2,6 @@ package com.moviesuggestions.manojkumar.moviesuggestions;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -47,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private LinearLayout linearLayout;
     private RecyclerView recyclerView;
-    BottomSheetBehavior bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(recycleAdapter);
-
-        bottomSheetBehavior = BottomSheetBehavior.from(linearLayout);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Loading, Please Wait ...");

@@ -1,5 +1,6 @@
 package com.moviesuggestions.manojkumar.moviesuggestions;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -21,27 +22,53 @@ public class MainAcitivityTabs extends AppCompatActivity {
         tabLayout = (TabLayout)findViewById(R.id.tabs);
         viewPager = (ViewPager)findViewById(R.id.viewpager);
 
-        tabLayout.addTab(tabLayout.newTab().setText("HIS"));
-        tabLayout.addTab(tabLayout.newTab().setText("HER"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
+
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
 
 
     }
 
-    class ViewpagerAdapter extends FragmentPagerAdapter {
+    class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        public ViewpagerAdapter(FragmentManager fm) {
+        Context context;
+
+        public SimpleFragmentPagerAdapter(Context context, FragmentManager fm) {
             super(fm);
+            this.context =  context;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return null;
+            switch (position) {
+                case 0:
+                    return new FragmentHis();
+                case 1:
+                    return new FragmentHers();
+                default:
+                    return null;
+
+            }
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+
+            switch (position) {
+                case 0:
+                    return "HIS";
+                case 1:
+                    return "Her";
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return 0;
+            return 2;
         }
     }
 
