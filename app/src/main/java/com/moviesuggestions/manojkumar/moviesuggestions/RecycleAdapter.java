@@ -60,11 +60,11 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
         TextView movie_title;
         ImageView movie_tumbnail;
         CardView card_view;
         ToggleButton like_button;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -77,7 +77,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
         }
 
-
         @Override
         public void onClick(View v) {
             onItemClick(v, getAdapterPosition());
@@ -85,10 +84,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
         private void onItemClick(View v, int adapterPosition) {
 
-            if(like_button.isChecked())
+            if(like_button.isChecked()) {
                 like_button.setChecked(false);
-            else if (!like_button.isChecked())
+            }
+            else if (!like_button.isChecked()) {
                 like_button.setChecked(true);
+            }
 
             Log.d(MainActivity.TAG, getItem(adapterPosition).getMovie());
         }

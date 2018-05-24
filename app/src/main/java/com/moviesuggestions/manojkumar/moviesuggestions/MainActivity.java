@@ -2,6 +2,7 @@ package com.moviesuggestions.manojkumar.moviesuggestions;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.android.volley.Request;
@@ -38,9 +40,14 @@ import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
 public class MainActivity extends AppCompatActivity {
 
     public static List<Movies> moviesList = new ArrayList<Movies>();
+    public static List<Movies> profile1MoviesList = new ArrayList<>();
+    public static List<Movies> profile2MoviesList = new ArrayList<>();
     public static String TAG = "MAIN_ACTIVITY_LOG";
     private String url;
     private ProgressDialog progressDialog;
+    private LinearLayout linearLayout;
+    private RecyclerView recyclerView;
+    BottomSheetBehavior bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +55,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         url = "https://api.themoviedb.org/3/list/70010?api_key=a85135fc6142aa13cf24097b37635007&language=en-US";
+        linearLayout = (LinearLayout) findViewById(R.id.main_activity_linear_layout);
+        recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
         final RecycleAdapter recycleAdapter = new RecycleAdapter(getApplicationContext(), moviesList);
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(recycleAdapter);
+
+        bottomSheetBehavior = BottomSheetBehavior.from(linearLayout);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Loading, Please Wait ...");
