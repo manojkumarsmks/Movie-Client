@@ -90,8 +90,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
             else if (!like_button.isChecked()) {
                 like_button.setChecked(true);
             }
-
-            Log.d(MainActivity.TAG, getItem(adapterPosition).getMovie());
         }
 
         private Movies getItem(int adapterPosition) {

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 public class MainAcitivityTabs extends AppCompatActivity {
     private TabLayout tabLayout;
@@ -18,9 +19,9 @@ public class MainAcitivityTabs extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_first);
-
-        tabLayout = (TabLayout)findViewById(R.id.tabs);
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        Toast.makeText(getApplicationContext(), "This is the activity", Toast.LENGTH_LONG).show();
+        tabLayout = (TabLayout)findViewById(R.id.tab_layout);
+        viewPager = (ViewPager)findViewById(R.id.view_pager);
 
         SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
 
@@ -60,7 +61,7 @@ public class MainAcitivityTabs extends AppCompatActivity {
                 case 0:
                     return "HIS";
                 case 1:
-                    return "Her";
+                    return "HER";
                 default:
                     return null;
             }
