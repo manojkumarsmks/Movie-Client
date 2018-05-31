@@ -100,6 +100,5 @@ public class FragmentHis extends Fragment {
             Movies movies = new Movies(movieTitle, movieTumbnail);
             moviesList.add(movies);
         }
-
     }
 }

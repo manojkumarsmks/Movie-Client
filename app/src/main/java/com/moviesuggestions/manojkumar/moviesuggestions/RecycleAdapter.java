@@ -1,24 +1,16 @@
 package com.moviesuggestions.manojkumar.moviesuggestions;
 
 import android.content.Context;
-import android.graphics.Movie;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -59,7 +51,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
         return movieList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView movie_title;
         ImageView movie_tumbnail;
         CardView card_view;
@@ -73,11 +65,17 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
             card_view = (CardView)itemView.findViewById(R.id.card_view);
             like_button = (ToggleButton)itemView.findViewById(R.id.button_favorite);
 
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setBackgroundColor(Color.GRAY);
+                    System.out.println("CLICKED");
+                }
+            });
 
         }
 
-        @Override
+        /*@Override
         public void onClick(View v) {
             onItemClick(v, getAdapterPosition());
         }
@@ -85,12 +83,14 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
         private void onItemClick(View v, int adapterPosition) {
 
             if(like_button.isChecked()) {
+
                 like_button.setChecked(false);
             }
             else if (!like_button.isChecked()) {
+                v.setBackgroundColor(Color.WHITE);
                 like_button.setChecked(true);
             }
-        }
+        }*/
 
         private Movies getItem(int adapterPosition) {
             return movieList.get(adapterPosition);
