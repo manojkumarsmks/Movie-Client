@@ -68,30 +68,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    v.setBackgroundColor(Color.GRAY);
+                    v.setBackgroundColor(Color.LTGRAY);
                     System.out.println("CLICKED");
                 }
             });
 
         }
-
-        /*@Override
-        public void onClick(View v) {
-            onItemClick(v, getAdapterPosition());
-        }
-
-        private void onItemClick(View v, int adapterPosition) {
-
-            if(like_button.isChecked()) {
-
-                like_button.setChecked(false);
-            }
-            else if (!like_button.isChecked()) {
-                v.setBackgroundColor(Color.WHITE);
-                like_button.setChecked(true);
-            }
-        }*/
-
         private Movies getItem(int adapterPosition) {
             return movieList.get(adapterPosition);
         }

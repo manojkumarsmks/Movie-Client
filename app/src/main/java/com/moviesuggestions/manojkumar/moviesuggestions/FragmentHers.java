@@ -52,7 +52,8 @@ public class FragmentHers extends Fragment {
         final RecycleAdapter recycleAdapter = new RecycleAdapter(getContext(), moviesList);
         url = "https://api.themoviedb.org/3/list/2469?api_key=a85135fc6142aa13cf24097b37635007&language=en-US";
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), ));
         recyclerView.setAdapter(recycleAdapter);
 
         progressDialog = new ProgressDialog(getContext());
